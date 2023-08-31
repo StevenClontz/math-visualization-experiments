@@ -11,3 +11,8 @@ Then click `http://0.0.0.0:8000` to open a new tab.
 
 The latest commit is available to the public at 
 https://clontz-fall-2023.github.io/math-visualization-experiments/
+
+
+## visualization library
+
+<https://js.cytoscape.org/>

@@ -13,21 +13,23 @@ async function getData() {
   const response = await fetch("./pibase-20230828.json");
   const data = await response.json();
   console.log(data);
-  const theoremId = "T000004";
+  const theoremId = "T000002";
   const theorem = data["theorems"].find(t=>t["uid"]==theoremId);
   console.log(theorem);
   const ifProp = theorem["when"]["property"];
+  const ifLabel = data["properties"].find(p=>p["uid"]==ifProp)["name"];
   const thenProp = theorem["then"]["property"];
+  const thenLabel = data["properties"].find(p=>p["uid"]==thenProp)["name"];
   cytoscape({
 
     container: document.getElementById('cy'), // container to render in
 
     elements: [ // list of graph elements to start with
       { // node a
-        data: { id: ifProp }
+        data: { id: ifProp, label: ifLabel }
       },
       { // node b
-        data: { id: thenProp }
+        data: { id: thenProp, label: thenLabel }
       },
       { // edge ab
         data: { id: 'ab', source: ifProp, target: thenProp }
@@ -39,7 +41,7 @@ async function getData() {
         selector: 'node',
         style: {
           'background-color': '#666',
-          'label': 'data(id)'
+          'label': 'data(label)'
         }
       },
 
