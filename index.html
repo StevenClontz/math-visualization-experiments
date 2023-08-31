@@ -17,9 +17,9 @@ async function getData() {
   const theorem = data["theorems"].find(t=>t["uid"]==theoremId);
   console.log(theorem);
   const ifProp = theorem["when"]["property"];
-  const ifLabel = data["properties"].find(p=>p["uid"]==ifProp)["name"];
+  const ifLabel = ifProp + ": " + data["properties"].find(p=>p["uid"]==ifProp)["name"];
   const thenProp = theorem["then"]["property"];
-  const thenLabel = data["properties"].find(p=>p["uid"]==thenProp)["name"];
+  const thenLabel = thenProp + ": " + data["properties"].find(p=>p["uid"]==thenProp)["name"];
   cytoscape({
 
     container: document.getElementById('cy'), // container to render in
