@@ -2,48 +2,68 @@
 <html>
     <head>
         <title>Math Visualization Experiment</title>
-        <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js" integrity="sha512-rOsRHy2O7kykGotH99Bi0+LyynL6rfQpaMiKOwYa1K1jYAFksJUwXE1gE6Relgo88g6lQ/uf8NaWeyzi1T53Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <p>Hello world.</p>
-        <div id="container"></div>
-        <script type="module">
-const div = d3.selectAll("div");
-// Declare the chart dimensions and margins.
-const width = 640;
-const height = 400;
-const marginTop = 20;
-const marginRight = 20;
-const marginBottom = 30;
-const marginLeft = 40;
+        <div id="cy" style="width:100%;height:300px;display:block;border:1px solid black"></div>
+        <script>
 
-// Declare the x (horizontal position) scale.
-const x = d3.scaleUtc()
-    .domain([new Date("2023-01-01"), new Date("2024-01-01")])
-    .range([marginLeft, width - marginRight]);
+async function getData() {
+  const response = await fetch("./pibase-20230828.json");
+  const data = await response.json();
+  console.log(data);
+  const theoremId = "T000004";
+  const theorem = data["theorems"].find(t=>t["uid"]==theoremId);
+  console.log(theorem);
+  const ifProp = theorem["when"]["property"];
+  const thenProp = theorem["then"]["property"];
+  cytoscape({
 
-// Declare the y (vertical position) scale.
-const y = d3.scaleLinear()
-    .domain([0, 100])
-    .range([height - marginBottom, marginTop]);
+    container: document.getElementById('cy'), // container to render in
 
-// Create the SVG container.
-const svg = d3.create("svg")
-    .attr("width", width)
-    .attr("height", height);
+    elements: [ // list of graph elements to start with
+      { // node a
+        data: { id: ifProp }
+      },
+      { // node b
+        data: { id: thenProp }
+      },
+      { // edge ab
+        data: { id: 'ab', source: ifProp, target: thenProp }
+      }
+    ],
 
-// Add the x-axis.
-svg.append("g")
-    .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(d3.axisBottom(x));
+    style: [ // the stylesheet for the graph
+      {
+        selector: 'node',
+        style: {
+          'background-color': '#666',
+          'label': 'data(id)'
+        }
+      },
 
-// Add the y-axis.
-svg.append("g")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y));
+      {
+        selector: 'edge',
+        style: {
+          'width': 3,
+          'line-color': '#ccc',
+          'target-arrow-color': '#ccc',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier'
+        }
+      }
+    ],
 
-// Append the SVG element.
-container.append(svg.node());
+    layout: {
+      name: 'grid',
+      rows: 1
+    }
+
+    });
+}
+
+getData()
         </script>
     </body>
 </html>
