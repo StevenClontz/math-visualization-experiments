@@ -43,10 +43,10 @@ async function getData() {
 
     elements: [ // list of graph elements to start with
       { // node a
-        data: { id: whenProp, label: whenLabel }
+        data: { id: whenProp, label: whenLabel, color: "blue" }
       },
       { // node b
-        data: { id: thenProp, label: thenLabel }
+        data: { id: thenProp, label: thenLabel, color: "blue" }
       },
       { // edge ab
         data: { id: 'ab', source: whenProp, target: thenProp }
@@ -57,7 +57,7 @@ async function getData() {
       {
         selector: 'node',
         style: {
-          'background-color': '#666',
+          'background-color': 'data(color)',
           'label': 'data(label)'
         }
       },
