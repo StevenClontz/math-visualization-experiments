@@ -13,26 +13,43 @@ async function getData() {
   const response = await fetch("./pibase-20230828.json");
   const data = await response.json();
   console.log(data);
-  const theoremId = "T000002";
+  const theoremId = "T000250";
   const theorem = data["theorems"].find(t=>t["uid"]==theoremId);
   console.log(theorem);
-  const ifProp = theorem["when"]["property"];
-  const ifLabel = ifProp + ": " + data["properties"].find(p=>p["uid"]==ifProp)["name"];
+  const whenProp = theorem["when"]["property"];
+  let whenPrefix = 'x';
+    if(theorem["when"]["value"]) {
+
+      whenPrefix = '';
+
+    }
+  const whenLabel = whenPrefix + whenProp + ": " + data["properties"].find(p=>p["uid"]==whenProp)["name"];
   const thenProp = theorem["then"]["property"];
-  const thenLabel = thenProp + ": " + data["properties"].find(p=>p["uid"]==thenProp)["name"];
+  let thenPrefix = 'x';
+  if(theorem["then"]["value"]) {
+
+      thenPrefix = '';
+
+    }
+  const thenLabel = thenPrefix + thenProp + ": " + data["properties"].find(p=>p["uid"]==thenProp)["name"];
+
+
+
+
+
   cytoscape({
 
     container: document.getElementById('cy'), // container to render in
 
     elements: [ // list of graph elements to start with
       { // node a
-        data: { id: ifProp, label: ifLabel }
+        data: { id: whenProp, label: whenLabel }
       },
       { // node b
         data: { id: thenProp, label: thenLabel }
       },
       { // edge ab
-        data: { id: 'ab', source: ifProp, target: thenProp }
+        data: { id: 'ab', source: whenProp, target: thenProp }
       }
     ],
 
