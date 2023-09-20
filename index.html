@@ -18,17 +18,21 @@ async function getData() {
   console.log(theorem);
   const whenProp = theorem["when"]["property"];
   let whenPrefix = 'x';
+  let whenColor = 'red';
     if(theorem["when"]["value"]) {
 
       whenPrefix = '';
+      whenColor = 'blue';
 
     }
   const whenLabel = whenPrefix + whenProp + ": " + data["properties"].find(p=>p["uid"]==whenProp)["name"];
   const thenProp = theorem["then"]["property"];
   let thenPrefix = 'x';
+  let thenColor = 'red';
   if(theorem["then"]["value"]) {
 
       thenPrefix = '';
+      thenColor = 'blue';
 
     }
   const thenLabel = thenPrefix + thenProp + ": " + data["properties"].find(p=>p["uid"]==thenProp)["name"];
@@ -43,10 +47,10 @@ async function getData() {
 
     elements: [ // list of graph elements to start with
       { // node a
-        data: { id: whenProp, label: whenLabel, color: "blue" }
+        data: { id: whenProp, label: whenLabel, color: whenColor }
       },
       { // node b
-        data: { id: thenProp, label: thenLabel, color: "blue" }
+        data: { id: thenProp, label: thenLabel, color: thenColor }
       },
       { // edge ab
         data: { id: 'ab', source: whenProp, target: thenProp }
